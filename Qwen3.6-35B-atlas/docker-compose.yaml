@@ -1,0 +1,59 @@
+services:
+  serve_atlas:
+    container_name: atlas
+    image: ${IMAGE}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - default
+    ipc: host
+    stdin_open: true
+    tty: true
+    restart: "no"
+    shm_size: $RAM_SIZE
+    ports:
+      - ${API_PORT}:8888
+    volumes:
+      - type: bind
+        source: ${HOST_MODELPATH}
+        target: /root/.cache/huggingface/hub/${MODEL_NAME}
+    command:
+      - serve
+      - ${MODEL_NAME}
+      - --model-from-path
+      - /root/.cache/huggingface/hub/${MODEL_NAME}
+      - --port
+      - "8888"
+      - --bind
+      - 0.0.0.0
+      - --max-seq-len
+      - "65536"
+      - --kv-cache-dtype
+      - fp8
+      - --kv-high-precision-layers
+      - auto
+      - --gpu-memory-utilization
+      - "0.90"
+      - --scheduling-policy
+      - slai
+      - --enable-prefix-caching
+      - --speculative
+      - --num-drafts
+      - "2"
+      - --tool-call-parser
+      - qwen3_coder
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8000/v1/models || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s

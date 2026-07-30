@@ -1,0 +1,40 @@
+services:
+  serve_vllm:
+    container_name: vllm
+    build:
+      context: .
+      args:
+        IMAGE: ${IMAGE}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    networks:
+      - default
+    ipc: host
+    stdin_open: true
+    tty: true
+    restart: "no"
+    shm_size: $RAM_SIZE
+    ports:
+      - ${API_PORT}:8000
+    environment:
+      MODEL_NAME: ${MODEL_NAME}
+      TORCH_CUDA_ARCH_LIST: ${TORCH_CUDA_ARCH_LIST}
+    volumes:
+      - type: bind
+        source: ${HOST_MODELPATH}
+        target: /root/.cache/huggingface/hub/${MODEL_NAME}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -f http://localhost:8000/v1/models || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s

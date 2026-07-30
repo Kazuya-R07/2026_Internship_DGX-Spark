@@ -1,0 +1,19 @@
+port: 8000
+max-model-len: 262144 # changeable
+uvicorn-log-level: "debug" # changeable
+gpu-memory-utilization: 0.80 # changeable
+trust-remote-code: true
+served_model_name: "DiffusionGemma-NVFP4"
+max-num-seqs: 10 # changeable
+attention-backend: TRITON_ATTN
+diffusion-config: '{"canvas_length":256}'
+override-generation-config: '{"max_new_tokens": null}'
+generation-config: vllm
+hf-overrides: '{"diffusion_sampler": "entropy_bound", "diffusion_entropy_bound": 0.1}'
+enable-auto-tool-choice: true
+enable-chunked-prefill: true
+enable-prefix-caching: true
+tool-call-parser: gemma4
+reasoning-parser: gemma4
+# default-chat-template-kwargs: '{"enable_thinking": true}'
+load-format: fastsafetensors

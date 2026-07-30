@@ -1,0 +1,30 @@
+include:
+  # - Diffusiongemma/docker-compose.yaml
+  # - Laguna/docker-compose.yaml
+  - Qwen3.6-35B-vllm/docker-compose.yaml
+  # - Qwen3.6-35B-atlas/docker-compose.yaml
+
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "${PORT}:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment: 
+      ENABLE_SIGNUP: "False"
+      OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL}
+      DEFAULT_MODELS: ${MODEL_NAME}
+      HTTP_PROXY: http://proxy.otsuka-shokai.co.jp:8080/
+      HTTPS_PROXY: http://proxy.otsuka-shokai.co.jp:8080/
+      NO_PROXY: localhost,127.0.0.1,172.18.0.0/16,.otsuka-shokai.co.jp,serve_vllm
+    restart: unless-stopped
+    depends_on:
+      serve_vllm:
+        condition: service_healthy
+
+volumes:
+  open-webui:

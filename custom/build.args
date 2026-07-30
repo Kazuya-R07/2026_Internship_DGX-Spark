@@ -1,0 +1,3 @@
+# Python パッケージ
+TORCH_VER=https://download.pytorch.org/whl/cu130
+VLLM_VER=0.25.1

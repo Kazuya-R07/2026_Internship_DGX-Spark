@@ -1,0 +1,21 @@
+port: 8000
+max-model-len: 128000 # changeable
+uvicorn-log-level: "debug" # changeable
+gpu-memory-utilization: 0.85 # changeable
+dtype: auto
+trust-remote-code: true
+served_model_name: "Laguna-S-2.1-NVFP4"
+max-num-seqs: 16 # changeable
+reasoning-parser: poolside_v1
+enable-auto-tool-choice: true
+tool-call-parser: poolside_v1
+enable-expert-parallel: true
+enable-prefix-caching: true
+max_num_batched_tokens: 4096
+async-scheduling: true
+enable-chunked-prefill: true
+speculative-config: '{"model":"poolside/Laguna-S-2.1-DFlash-NVFP4","num_speculative_tokens":3}'
+kv-cache-dtype: fp8
+default-chat-template-kwargs: '{"enable_thinking": true}'
+override-generation-config: '{"temperature": 0.7, "top_p": 0.95}'
+
