@@ -18,9 +18,6 @@ services:
       ENABLE_SIGNUP: "False"
       OPENAI_API_BASE_URL: ${OPENAI_API_BASE_URL}
       DEFAULT_MODELS: ${MODEL_NAME}
-      HTTP_PROXY: http://proxy.otsuka-shokai.co.jp:8080/
-      HTTPS_PROXY: http://proxy.otsuka-shokai.co.jp:8080/
-      NO_PROXY: localhost,127.0.0.1,172.18.0.0/16,.otsuka-shokai.co.jp,serve_vllm
     restart: unless-stopped
     depends_on:
       serve_vllm:
