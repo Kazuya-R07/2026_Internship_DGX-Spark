@@ -14,7 +14,7 @@ max_num_batched_tokens: 4096
 async-scheduling: true
 stream-interval: 3
 enable-chunked-prefill: true
-speculative-config: '{"method": "dflash", "model": "z-lab/Qwen3.6-35B-A3B-DFlash", "num_speculative_tokens": 15}'
+speculative-config: '{"method": "dflash", "model": "modal-labs/Qwen3.6-35B-A3B-DFlash", "num_speculative_tokens": 15}'
 # speculative-config: '{"method":"mtp","num_speculative_tokens":3}' 
 default-chat-template-kwargs: '{"enable_thinking": true}'
 override-generation-config: '{"temperature": 1.0, "top_p": 0.95, "top_k": 20, "presence_penalty": 1.3, "repetition_penalty": 1.0}'
